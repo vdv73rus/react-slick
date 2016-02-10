@@ -113,6 +113,8 @@ var helpers = {
           this.props.afterChange(currentSlide);
         }
         ReactTransitionEvents.removeEndEventListener(ReactDOM.findDOMNode(this.refs.track).children[currentSlide], callback);
+
+        this.autoPlay();
       };
 
       this.setState({
@@ -125,8 +127,6 @@ var helpers = {
       if (this.props.beforeChange) {
         this.props.beforeChange(this.state.currentSlide, currentSlide);
       }
-
-      this.autoPlay();
       return;
     }
 
@@ -145,7 +145,7 @@ var helpers = {
       } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
         currentSlide = 0;
       } else {
-        currentSlide = targetSlide - this.state.slideCount;
+        currentSlide = targetSlide % this.state.slideCount;
       }
     } else {
       currentSlide = targetSlide;
@@ -216,6 +216,8 @@ var helpers = {
           this.props.afterChange(currentSlide);
         }
         ReactTransitionEvents.removeEndEventListener(ReactDOM.findDOMNode(this.refs.track), callback);
+
+        this.autoPlay();
       };
 
       this.setState({
@@ -228,7 +230,6 @@ var helpers = {
 
     }
 
-    this.autoPlay();
   },
   swipeDirection: function (touchObject) {
     var xDist, yDist, r, swipeAngle;
