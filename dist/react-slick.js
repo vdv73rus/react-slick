@@ -451,7 +451,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, this.props, this.state));
 	    touchObject.curX = e.touches ? e.touches[0].pageX : e.clientX;
 	    touchObject.curY = e.touches ? e.touches[0].pageY : e.clientY;
-	    touchObject.swipeLength = Math.round(Math.sqrt(Math.pow(touchObject.curX - touchObject.startX, 2)));
+	    touchObject.swipeLength = Math.round(Math.abs(touchObject.curX - touchObject.startX));
 
 	    positionOffset = (this.props.rtl === false ? 1 : -1) * (touchObject.curX > touchObject.startX ? 1 : -1);
 
@@ -842,6 +842,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          _this.props.afterChange(currentSlide);
 	        }
 	        _reactLibReactTransitionEvents2['default'].removeEndEventListener(_ReactDOM2['default'].findDOMNode(_this.refs.track).children[currentSlide], callback);
+
+	        _this.autoPlay();
 	      };
 
 	      this.setState({
@@ -854,8 +856,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (this.props.beforeChange) {
 	        this.props.beforeChange(this.state.currentSlide, currentSlide);
 	      }
-
-	      this.autoPlay();
 	      return;
 	    }
 
@@ -866,15 +866,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
 	        currentSlide = this.state.slideCount - this.state.slideCount % this.props.slidesToScroll;
 	      } else {
-	        currentSlide = this.state.slideCount + targetSlide;
+	        currentSlide = this.state.slideCount - this.props.slidesToScroll;
 	      }
 	    } else if (targetSlide >= this.state.slideCount) {
 	      if (this.props.infinite === false) {
 	        currentSlide = this.state.slideCount - this.props.slidesToShow;
-	      } else if (this.state.slideCount % this.props.slidesToScroll !== 0) {
-	        currentSlide = 0;
 	      } else {
-	        currentSlide = targetSlide - this.state.slideCount;
+	        currentSlide = 0;
 	      }
 	    } else {
 	      currentSlide = targetSlide;
@@ -944,6 +942,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          _this.props.afterChange(currentSlide);
 	        }
 	        _reactLibReactTransitionEvents2['default'].removeEndEventListener(_ReactDOM2['default'].findDOMNode(_this.refs.track), callback);
+
+	        _this.autoPlay();
 	      };
 
 	      this.setState({
@@ -954,8 +954,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _reactLibReactTransitionEvents2['default'].addEndEventListener(_ReactDOM2['default'].findDOMNode(this.refs.track), callback);
 	      });
 	    }
-
-	    this.autoPlay();
 	  },
 	  swipeDirection: function swipeDirection(touchObject) {
 	    var xDist, yDist, r, swipeAngle;
